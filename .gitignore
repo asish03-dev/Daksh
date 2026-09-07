@@ -1,0 +1,70 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production build outputs
+dist/
+dist-ssr/
+build/
+out/
+
+# Environment variables & Sensitive credentials
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.pem
+*.key
+*.cert
+
+# Large archives & zip backups
+*.zip
+*.tar.gz
+*.rar
+*.7z
+Daksh.zip
+
+# Internal prompts, design notes & planning documents
+MASTER_WEBSITE_PROMPT.md
+PROJECT_UPGRADE_PLAN.md
+PROJECT_DOCUMENTATION.md
+UI_DESIGN_SYSTEM.md
+*PROMPT*.md
+*prompt*.md
+*UPGRADE*.md
+*upgrade*.md
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor & OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swo
+
+# AI / IDE Agent configs
+.gemini/
+.agents/
+.cursor/
