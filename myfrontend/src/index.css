@@ -1,0 +1,724 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   BASE LAYER — Reset + Document + Dark Mode
+   ============================================================ */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: auto;
+    scrollbar-gutter: stable;
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* GIGW 3.0 Text Size Adjustment Classes */
+  html.text-scale-large {
+    font-size: 17.5px;
+  }
+  html.text-scale-larger {
+    font-size: 19px;
+  }
+
+  body {
+    font-family: "Plus Jakarta Sans", "Noto Sans Devanagari", "Hind", Inter, system-ui, sans-serif;
+    background-color: #F8FAFC; /* Clean Slate 50 Canvas */
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(241, 245, 249, 0.9) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(248, 250, 252, 0.9) 0px, transparent 50%);
+    background-attachment: fixed;
+    color: #0F172A;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.55;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark body {
+    background-color: #0B0F17; /* Deep Obsidian Slate Void */
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.05) 0px, transparent 40%),
+      radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.6) 0px, transparent 40%);
+    background-attachment: fixed;
+    color: #F8FAFC;
+  }
+
+  /* ============================================================
+     GIGW 3.0 MANDATORY HIGH-CONTRAST THEME (WCAG 2.1 AAA)
+     ============================================================ */
+  html.high-contrast body {
+    background-color: #FFFFFF !important;
+    background-image: none !important;
+    color: #000000 !important;
+  }
+
+  html.high-contrast .card,
+  html.high-contrast .glass-card,
+  html.high-contrast .skeuo-card {
+    background: #FFFFFF !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+    color: #000000 !important;
+  }
+
+  html.high-contrast h1, 
+  html.high-contrast h2, 
+  html.high-contrast h3, 
+  html.high-contrast h4, 
+  html.high-contrast p, 
+  html.high-contrast span {
+    color: #000000 !important;
+  }
+
+  html.high-contrast .btn-primary,
+  html.high-contrast .btn-skeuo {
+    background: #134E4A !important; /* Dark Teal AAA Safe */
+    color: #FFFFFF !important;
+    border: 2px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  html.high-contrast a:focus,
+  html.high-contrast button:focus,
+  html.high-contrast input:focus,
+  html.high-contrast select:focus {
+    outline: 3px solid #0A1F44 !important;
+    outline-offset: 2px !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Sora", "Plus Jakarta Sans", "Noto Sans Devanagari", "Hind", sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #0F172A;
+    line-height: 1.3;
+  }
+
+  html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+    color: #F8FAFC;
+  }
+
+  /* Remove unwanted focus rings on mouse click while preserving keyboard accessibility */
+  *:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  button:focus:not(:focus-visible),
+  [role="button"]:focus:not(:focus-visible),
+  a:focus:not(:focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Accessible keyboard navigation focus (subtle neutral indigo, not bright green) */
+  :focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4) !important;
+    border-radius: 8px;
+  }
+
+  /* Custom Warm Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #C9D1DB;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A8B4C0;
+  }
+
+  html.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.18);
+  }
+  html.dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.3);
+  }
+
+  /* Dark scrollbar for dark surfaces */
+  .scrollbar-dark::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.14);
+  }
+  .scrollbar-dark::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.24);
+  }
+}
+
+/* ============================================================
+   COMPONENTS LAYER — Design System Classes (Navy + Orange)
+   ============================================================ */
+@layer components {
+
+  /* --- BUTTONS -------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold
+      transition-all duration-150 select-none cursor-pointer
+      focus:outline-none focus:ring-0;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 10px 18px;
+  }
+  .btn:active {
+    transform: scale(0.97);
+    transition-duration: 80ms;
+  }
+  .btn:disabled {
+    @apply opacity-50 cursor-not-allowed pointer-events-none;
+  }
+  .btn:focus,
+  .btn:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Primary action: Obsidian Teal */
+  .btn-primary {
+    @apply btn bg-primary hover:bg-primary-hover text-white shadow-sm;
+  }
+  .btn-primary:focus,
+  .btn-primary:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Secondary action: Clean surface */
+  .btn-secondary {
+    @apply btn bg-white dark:bg-canvas-card-dark text-slate-800 dark:text-slate-100 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    @apply bg-slate-50 dark:bg-slate-800/60;
+  }
+
+  .btn-navy {
+    @apply btn bg-navy-mid hover:bg-navy-deep text-white border border-white/10;
+  }
+
+  .btn-success {
+    @apply btn bg-success text-white hover:bg-success-hover;
+  }
+
+  .btn-danger {
+    @apply btn bg-white dark:bg-slate-900 text-danger border border-danger-light-border hover:bg-danger-light dark:hover:bg-red-950/30;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100;
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: rgba(0,0,0,0.05);
+  }
+  html.dark .btn-ghost:hover:not(:disabled) {
+    background-color: rgba(255,255,255,0.06);
+  }
+
+  /* --- VIBRANT BRAND MESH GLASS BACKDROP (Obsidian Slate Bloom) --- */
+  .vibrant-glass-backdrop {
+    background-color: #0B0F17; /* Obsidian base */
+    background-image:
+      radial-gradient(at 15% 20%, rgba(13, 148, 136, 0.25) 0px, transparent 55%),   /* Soft Teal bloom */
+      radial-gradient(at 85% 15%, rgba(14, 165, 233, 0.20) 0px, transparent 55%),   /* Soft Sky bloom */
+      radial-gradient(at 50% 85%, rgba(99, 102, 241, 0.15) 0px, transparent 60%);   /* Subtle Indigo ambient */
+    background-size: 150% 150%;
+  }
+
+  /* Near-solid data card for high readability (GIGW / Data screens) */
+  .data-card {
+    @apply bg-white/95 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 sm:p-6;
+    box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.04);
+  }
+
+  /* --- CLEAN ENTERPRISE CARD SURFACES --- */
+  .card, .glass-card, .skeuo-card {
+    @apply bg-white dark:bg-[#111827] border border-slate-200/90 dark:border-slate-800 rounded-2xl p-5 sm:p-6;
+    box-shadow: 
+      0 1px 3px 0 rgba(0, 0, 0, 0.04),
+      0 6px 16px -4px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+  }
+  html.dark .card, html.dark .glass-card, html.dark .skeuo-card {
+    box-shadow: 
+      0 4px 20px -2px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .card-hover {
+    @apply card cursor-pointer;
+  }
+  .card-hover:hover {
+    transform: translateY(-2px);
+    border-color: rgba(13, 148, 136, 0.4);
+    box-shadow: 
+      0 12px 28px -6px rgba(13, 148, 136, 0.10),
+      0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  }
+  html.dark .card-hover:hover {
+    border-color: rgba(20, 184, 166, 0.35);
+    box-shadow: 
+      0 12px 28px -6px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(20, 184, 166, 0.2);
+  }
+
+  /* Frosted Glass Inset Well */
+  .skeuo-well, .glass-well {
+    @apply bg-slate-50 dark:bg-slate-900/60 rounded-xl border border-slate-200/80 dark:border-slate-800;
+  }
+
+  /* Frosted Glass Action Button */
+  .btn-skeuo, .btn-glass {
+    @apply relative font-bold rounded-xl px-4 py-2 text-xs transition-all duration-150 cursor-pointer select-none backdrop-blur-md;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 14px -2px rgba(13, 148, 136, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
+  .btn-skeuo:hover, .btn-glass:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 8px 20px -2px rgba(13, 148, 136, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+  .btn-skeuo:active, .btn-glass:active {
+    transform: translateY(1px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Frosted Glass Badge */
+  .skeuo-badge, .glass-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-lg text-2xs font-extrabold backdrop-blur-md;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  /* Floating island navbar */
+  .nav-island {
+    @apply sticky top-4 z-50 mx-auto max-w-6xl w-[calc(100%-2rem)] px-4 sm:px-6 py-2.5 rounded-2xl
+      bg-white/85 dark:bg-slate-900/85 backdrop-blur-xl border border-slate-200/80 dark:border-white/10
+      shadow-island dark:shadow-island-dark transition-all duration-200;
+  }
+
+  /* --- FORM INPUTS ---------------------------------------- */
+  .input-field {
+    @apply w-full px-4 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100
+      placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors duration-150;
+  }
+  .input-field:focus {
+    @apply outline-none border-primary/80;
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.12);
+  }
+
+  /* --- BADGES --------------------------------------------- */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-gap {
+    @apply badge bg-danger-light text-danger border border-danger-light-border dark:bg-red-950/40 dark:text-red-400 dark:border-red-900/50;
+  }
+  .badge-progress {
+    @apply badge bg-orange-pale text-orange border border-orange-light dark:bg-amber-950/40 dark:text-amber-400 dark:border-amber-900/50;
+  }
+  .badge-mastered {
+    @apply badge bg-success-light text-success border border-success-light-border dark:bg-emerald-950/40 dark:text-emerald-400 dark:border-emerald-900/50;
+  }
+  .badge-critical {
+    @apply badge bg-red-100 text-red-800 border border-red-200 dark:bg-red-950/50 dark:text-red-300;
+  }
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-800 border border-amber-200 dark:bg-amber-950/50 dark:text-amber-300;
+  }
+  .badge-info {
+    @apply badge bg-primary-light text-primary border border-primary-light-border;
+  }
+
+  /* --- SIDEBAR ITEMS (Obsidian Surface) -------------------- */
+  .sidebar-item {
+    @apply relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium w-full
+      transition-all duration-150 cursor-pointer text-sidebar-text;
+  }
+  .sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: #FFFFFF;
+  }
+  .sidebar-item-active {
+    @apply sidebar-item font-semibold text-white;
+    background-color: #1A2535;
+  }
+  /* Teal left accent bar on active item */
+  .sidebar-item-active::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 20px;
+    background-color: #14B8A6;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* --- TOPBAR / NAVBAR (Navy Mid or Canvas Card) ------------ */
+  .topbar {
+    @apply sticky top-0 z-40 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800
+      flex items-center justify-between;
+    box-shadow: 0 1px 0 0 rgba(0,0,0,0.05);
+  }
+
+  /* --- PROGRESS BARS ------------------------------------- */
+  .frac-bar-bg {
+    @apply h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden;
+  }
+  .frac-bar-fill {
+    @apply h-1.5 rounded-full transition-all duration-700 ease-out bg-primary;
+  }
+
+  /* --- SKELETON SHIMMER ---------------------------------- */
+  .skeleton {
+    @apply rounded-lg bg-slate-100 dark:bg-slate-800;
+    background: linear-gradient(
+      90deg,
+      rgba(241, 245, 249, 1) 0%,
+      rgba(232, 237, 242, 1) 40%,
+      rgba(241, 245, 249, 1) 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
+  html.dark .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(30, 41, 59, 1) 0%,
+      rgba(51, 65, 85, 1) 40%,
+      rgba(30, 41, 59, 1) 80%
+    );
+    background-size: 200% 100%;
+  }
+
+  /* --- DIVIDERS ------------------------------------------ */
+  .divider {
+    @apply h-px w-full bg-slate-100 dark:bg-slate-800;
+  }
+
+  /* --- SECTION LABEL ------------------------------------- */
+  .section-label {
+    @apply text-2xs font-bold uppercase tracking-widest text-primary dark:text-teal-500;
+  }
+
+  /* --- NAV LINKS (marketing navbar) ---------------------- */
+  .nav-link {
+    @apply text-sm font-medium text-slate-200 hover:text-white px-3 py-2 rounded-lg
+      hover:bg-white/10 transition-colors duration-100;
+  }
+  .nav-link-active {
+    @apply nav-link text-white bg-white/15 font-semibold text-orange-light;
+  }
+
+  /* --- STAT CARD ----------------------------------------- */
+  .stat-card {
+    @apply card flex flex-col gap-2;
+  }
+
+  /* --- TOOLTIP ------------------------------------------- */
+  .tooltip-wrapper {
+    @apply relative;
+  }
+  .tooltip-text {
+    @apply absolute left-full top-1/2 -translate-y-1/2 ml-3
+      bg-navy-deep text-white text-xs font-medium px-2.5 py-1.5 rounded-lg
+      whitespace-nowrap pointer-events-none opacity-0 z-50
+      transition-opacity duration-100 border border-white/10;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+  }
+  .tooltip-wrapper:hover .tooltip-text,
+  .tooltip-wrapper:focus-within .tooltip-text {
+    @apply opacity-100;
+  }
+
+  /* --- TRICOLOR BAR -------------------------------------- */
+  .tricolor-bar {
+    background: linear-gradient(90deg, #FF9933 33.33%, #ffffff 33.33% 66.66%, #138808 66.66%);
+    height: 3px;
+    width: 100%;
+  }
+
+  /* --- CHAT (Mitra) -------------------------------------- */
+  .chat-row {
+    @apply w-full py-5 px-6 transition-colors duration-100;
+  }
+  .chat-row-user {
+    @apply chat-row bg-slate-50 dark:bg-slate-900/40;
+  }
+  .chat-row-ai {
+    @apply chat-row bg-white dark:bg-canvas-card-dark;
+  }
+  .chat-turn-label {
+    @apply text-xs font-semibold mb-2 flex items-center gap-2;
+  }
+  .chat-content {
+    @apply text-sm text-slate-800 dark:text-slate-200 leading-relaxed;
+  }
+
+  /* --- MARKDOWN CONTENT (in chat) ----------------------- */
+  .prose-chat {
+    @apply text-sm text-slate-800 dark:text-slate-200 leading-relaxed;
+  }
+  .prose-chat p {
+    @apply mb-3;
+  }
+  .prose-chat p:last-child {
+    @apply mb-0;
+  }
+  .prose-chat strong {
+    @apply font-semibold text-slate-900 dark:text-white;
+  }
+  .prose-chat em {
+    @apply italic;
+  }
+  .prose-chat ul {
+    @apply list-disc list-inside mb-3 space-y-1;
+  }
+  .prose-chat ol {
+    @apply list-decimal list-inside mb-3 space-y-1;
+  }
+  .prose-chat li {
+    @apply text-sm;
+  }
+  .prose-chat h3, .prose-chat h4 {
+    @apply font-semibold text-slate-900 dark:text-white mb-2 mt-4;
+  }
+  .prose-chat h3 {
+    @apply text-base;
+  }
+  .prose-chat h4 {
+    @apply text-sm;
+  }
+  .prose-chat code:not(pre code) {
+    @apply font-mono text-xs bg-primary-light dark:bg-primary-dark/30 text-primary dark:text-teal-500 px-1.5 py-0.5 rounded font-medium;
+  }
+  .prose-chat pre {
+    @apply mb-3 rounded-lg overflow-hidden border border-slate-200 dark:border-slate-700;
+  }
+  .prose-chat blockquote {
+    @apply border-l-4 border-primary pl-4 text-slate-600 dark:text-slate-400 italic mb-3;
+  }
+  .prose-chat hr {
+    @apply border-slate-200 dark:border-slate-800 my-4;
+  }
+
+  /* --- MARQUEE UTILITIES --------------------------------- */
+  .marquee-container {
+    @apply flex overflow-hidden select-none;
+  }
+  .marquee-container:hover .marquee-content,
+  .marquee-container:focus-within .marquee-content {
+    animation-play-state: paused;
+  }
+  .marquee-content {
+    @apply flex shrink-0 gap-5 min-w-full items-center;
+    animation: marquee 28s linear infinite;
+  }
+
+  /* --- KEN BURNS HERO (scale 1 -> 1.06 -> 1 over 10s) ----- */
+  .ken-burns-hero {
+    animation: kenBurnsContinuous 10s ease-in-out infinite;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  /* Subtle Navy & Orange Duotone / Color-grade treatment for theme images */
+  .gallery-image-graded {
+    filter: contrast(1.05) saturate(1.05);
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .gallery-image-graded:hover {
+    filter: contrast(1.1) saturate(1.15);
+  }
+}
+
+@keyframes kenBurnsContinuous {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes border-beam {
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes kenburns-pan {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.09) translate(-1.5%, -1%);
+  }
+  100% {
+    transform: scale(1.15) translate(1.5%, 1%);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   UTILITIES LAYER
+   ============================================================ */
+@layer utilities {
+  .animate-kenburns {
+    animation: kenburns-pan 12s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  .animate-slideInRight {
+    animation: slideInFromRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-section-enter {
+    animation: fadeInUp 0.15s ease-out both;
+  }
+  .animate-slideLeft {
+    animation: slideLeft 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out both;
+  }
+
+  /* Respect prefers-reduced-motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    .ken-burns-hero {
+      animation: none !important;
+      transform: none !important;
+    }
+    .marquee-content {
+      animation: none !important;
+    }
+  }
+
+  /* Sovereign Smoked Glassmorphism */
+  .glass-sovereign {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  }
+  html.dark .glass-sovereign {
+    background: rgba(15, 17, 23, 0.72);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.10);
+  }
+
+  /* Soft Luminescent Glow Utilities (Refined, Non-Harsh) */
+  .glow-teal {
+    box-shadow: 0 4px 20px -2px rgba(13, 148, 136, 0.22);
+  }
+  .glow-cyan {
+    box-shadow: 0 4px 20px -2px rgba(6, 182, 212, 0.20);
+  }
+  .glow-emerald {
+    box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.20);
+  }
+  .glow-gold {
+    box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.20);
+  }
+
+  /* 3D Spatial Z-Depth Utilities */
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .translate-z-10 {
+    transform: translateZ(10px);
+  }
+  .translate-z-20 {
+    transform: translateZ(20px);
+  }
+  .translate-z-30 {
+    transform: translateZ(30px);
+  }
+
+  /* Official Certificate A4 Landscape Print Mode */
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    body {
+      background: white !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    header, nav, aside, footer, .print-hidden {
+      display: none !important;
+    }
+  }
+}
+
